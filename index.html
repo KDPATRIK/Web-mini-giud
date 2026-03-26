@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Веб-разработка — Полное руководство</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --accent: #6c63ff;
+    --accent2: #ff6b6b;
+    --accent3: #43e97b;
+    --text: #e8e8f0;
+    --text2: #9090a8;
+    --border: rgba(108,99,255,0.18);
+    --card: #14141e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    margin-right: auto;
+  }
+  nav a {
+    color: var(--text2);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+
+
+  /* --- SECTIONS --- */
+  .section {
+    padding: 5rem 5vw;
+    border-top: 1px solid var(--border);
+  }
+  .section:first-of-type { padding-top: 7rem; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.15;
+  }
+  .section-sub {
+    color: var(--text2);
+    font-size: 0.95rem;
+    max-width: 560px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+
+  /* --- GRID CARDS --- */
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    border-color: rgba(108,99,255,0.4);
+    transform: translateY(-2px);
+  }
+  .card-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+    display: inline-block;
+    background: rgba(255,107,107,0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+  .card-icon.green { color: var(--accent3); background: rgba(67,233,123,0.1); }
+  .card-icon.purple { color: var(--accent); background: rgba(108,99,255,0.1); }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .card p {
+    color: var(--text2);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  /* --- LAYERS / STACK --- */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .stack-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: start;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .stack-item:last-child { border-bottom: none; }
+  .stack-item:hover { background: var(--bg3); }
+  .stack-left {
+    padding: 1.25rem 1.5rem;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .stack-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .stack-role {
+    font-size: 11px;
+    color: var(--text2);
+    letter-spacing: 0.04em;
+  }
+  .stack-right {
+    padding: 1.25rem 1.5rem;
+    color: var(--text2);
+    font-size: 0.9rem;
+  }
+
+  /* --- TREE --- */
+  .tree {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+  }
+  .tree-root { color: var(--accent); font-weight: 500; }
+  .tree-item { color: var(--text); padding-left: 1.5rem; }
+  .tree-item::before { content: '├── '; color: var(--text2); }
+  .tree-item.last::before { content: '└── '; color: var(--text2); }
+  .tree-sub { padding-left: 3rem; color: var(--text2); }
+  .tree-sub::before { content: '├── '; }
+  .tree-sub.last::before { content: '└── '; }
+
+  /* --- CODE BLOCK --- */
+  .code-block {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .code-header {
+    padding: 0.6rem 1rem;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .code-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  pre {
+    padding: 1.25rem 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: var(--text);
+    overflow-x: auto;
+  }
+  .kw { color: #c792ea; }
+  .tag { color: #ff6b6b; }
+  .attr { color: #82aaff; }
+  .val { color: #c3e88d; }
+  .cm { color: #546e7a; }
+
+  /* --- PAGES TABLE --- */
+  .pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .page-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: all 0.2s;
+  }
+  .page-card:hover {
+    border-color: rgba(108,99,255,0.5);
+    background: var(--bg3);
+  }
+  .page-card .label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+  }
+  .label-must { background: rgba(67,233,123,0.15); color: var(--accent3); }
+  .label-common { background: rgba(108,99,255,0.15); color: var(--accent); }
+  .label-shop { background: rgba(255,107,107,0.15); color: var(--accent2); }
+  .page-card h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.35rem; }
+  .page-card p { color: var(--text2); font-size: 0.85rem; }
+
+  /* --- STRUCTURE TYPES --- */
+  .struct-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .struct-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    transition: all 0.2s;
+  }
+  .struct-card:hover { border-color: rgba(108,99,255,0.4); transform: translateY(-2px); }
+  .struct-visual {
+    height: 100px;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .struct-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .struct-card p { color: var(--text2); font-size: 0.875rem; }
+  .struct-card .use { margin-top: 0.75rem; font-size: 0.8rem; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+
+  /* --- DOM SECTION --- */
+  .dom-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  footer p { color: var(--text2); font-size: 12px; }
+
+  /* --- ANIMATIONS --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero > * { animation: fadeUp 0.6s ease both; }
+  .hero > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero > *:nth-child(5) { animation-delay: 0.5s; }
+
+
+  @media (max-width: 768px) {
+    .struct-grid { grid-template-columns: 1fr; }
+    .dom-layout { grid-template-columns: 1fr; }
+    .stack-item { grid-template-columns: 1fr; }
+    .stack-left { border-right: none; border-bottom: 1px solid var(--border); }
+    nav a:not(.nav-logo) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">&lt;webdev/&gt;</a>
+  <a href="#structure">Структура</a>
+  <a href="#html">HTML</a>
+  <a href="#pages">Страницы</a>
+  <a href="#types">Виды</a>
+</nav>
+
+
+<!-- СТРУКТУРА ВЕБ-РАЗРАБОТКИ -->
+<section class="section" id="structure">
+  <div class="section-label">01 — Основы</div>
+  <h2 class="section-title">Структура веб-разработки</h2>
+  <p class="section-sub">Веб-разработка делится на четыре слоя, каждый из которых отвечает за свою часть работы.</p>
+
+  <div class="grid-3" style="margin-bottom:2rem">
+    <div class="card">
+      <span class="card-icon purple">Frontend</span>
+      <h3>Клиентская часть</h3>
+      <p>Всё, что видит пользователь: HTML, CSS, JavaScript. Фреймворки — React, Vue. Инструменты сборки — Vite, Webpack.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">Backend</span>
+      <h3>Серверная часть</h3>
+      <p>Логика приложения, обработка данных, API. Языки: Node.js, Python, Go. Взаимодействует с фронтендом через REST API.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon green">Database</span>
+      <h3>База данных</h3>
+      <p>Хранилище данных. SQL (PostgreSQL, MySQL) — для структурированных данных. NoSQL (MongoDB) — для гибких.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon purple">DevOps</span>
+      <h3>Инфраструктура</h3>
+      <p>Docker, CI/CD, облачные провайдеры (AWS, GCP). Отвечает за деплой, масштабирование и надёжность.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">Protocols</span>
+      <h3>Протоколы</h3>
+      <p>HTTP/S, WebSocket, DNS, SSL/TLS, CDN. Связывают все слои системы между собой.</p>
+    </div>
+    <div class="card">
+      <span class="card-icon green">Security</span>
+      <h3>Безопасность</h3>
+      <p>Auth / JWT, CORS, шифрование. Защищает данные пользователей и обеспечивает авторизацию.</p>
+    </div>
+  </div>
+
+  <div class="stack">
+    <div class="stack-item">
+      <div class="stack-left">
+        <span class="stack-name">HTML</span>
+        <span class="stack-role">Разметка</span>
+      </div>
+      <div class="stack-right">Задаёт структуру страницы — заголовки, параграфы, кнопки, формы, ссылки.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-left">
+        <span class="stack-name">CSS</span>
+        <span class="stack-role">Стили</span>
+      </div>
+      <div class="stack-right">Отвечает за внешний вид: цвета, шрифты, отступы, анимации, адаптивность.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-left">
+        <span class="stack-name">JavaScript</span>
+        <span class="stack-role">Логика</span>
+      </div>
+      <div class="stack-right">Делает страницу интерактивной: обработка кликов, запросы к серверу, динамический контент.</div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-left">
+        <span class="stack-name">React / Vue</span>
+        <span class="stack-role">Фреймворки</span>
+      </div>
+      <div class="stack-right">Помогают строить сложные интерфейсы из переиспользуемых компонентов.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HTML -->
+<section class="section" id="html">
+  <div class="section-label">02 — HTML</div>
+  <h2 class="section-title">Что такое HTML</h2>
+  <p class="section-sub">HTML — язык разметки, на котором написана структура каждой веб-страницы. Браузер читает HTML и превращает его в визуальную страницу.</p>
+
+  <div class="dom-layout">
+    <div>
+      <h3 style="font-family:'Playfair Display',serif;margin-bottom:1rem;font-size:1.2rem">DOM-дерево страницы</h3>
+      <div class="tree">
+        <div class="tree-root">&lt;html&gt;</div>
+        <div class="tree-item">&lt;head&gt;</div>
+        <div class="tree-sub">&lt;title&gt; — заголовок вкладки</div>
+        <div class="tree-sub last">&lt;meta&gt; — SEO, кодировка</div>
+        <div class="tree-item last">&lt;body&gt;</div>
+        <div class="tree-sub">&lt;header&gt; — шапка</div>
+        <div class="tree-sub">&lt;main&gt; — основной контент</div>
+        <div class="tree-sub" style="padding-left:4.5rem">&lt;h1&gt;–&lt;h6&gt; заголовки</div>
+        <div class="tree-sub" style="padding-left:4.5rem">&lt;p&gt; параграфы</div>
+        <div class="tree-sub" style="padding-left:4.5rem">&lt;img&gt; &lt;a&gt; &lt;div&gt;</div>
+        <div class="tree-sub last">&lt;footer&gt; — подвал</div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-family:'Playfair Display',serif;margin-bottom:1rem;font-size:1.2rem">Пример разметки</h3>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dot" style="background:#ff5f57"></div>
+          <div class="code-dot" style="background:#febc2e"></div>
+          <div class="code-dot" style="background:#28c840"></div>
+          index.html
+        </div>
+        <pre><span class="cm">&lt;!-- Структура HTML-страницы --&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"ru"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;title&gt;</span>Мой сайт<span class="tag">&lt;/title&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/head&gt;</span>
+
+  <span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;header&gt;</span>
+      <span class="tag">&lt;h1&gt;</span>Заголовок сайта<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;/header&gt;</span>
+
+    <span class="tag">&lt;main&gt;</span>
+      <span class="tag">&lt;h2&gt;</span>О нас<span class="tag">&lt;/h2&gt;</span>
+      <span class="tag">&lt;p&gt;</span>Текст параграфа...<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span>
+           <span class="attr">alt</span>=<span class="val">"Фото"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/contact"</span><span class="tag">&gt;</span>
+        Связаться<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/main&gt;</span>
+
+    <span class="tag">&lt;footer&gt;</span>
+      <span class="tag">&lt;p&gt;</span>© 2025<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/footer&gt;</span>
+  <span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+      </div>
+
+      <div class="grid-2" style="margin-top:1rem">
+        <div class="card" style="padding:1rem">
+          <span class="card-icon purple" style="margin-bottom:0.5rem">Семантика</span>
+          <p style="font-size:0.85rem">Теги &lt;header&gt;, &lt;main&gt;, &lt;footer&gt; говорят браузеру о смысле блока. Улучшают SEO и доступность.</p>
+        </div>
+        <div class="card" style="padding:1rem">
+          <span class="card-icon green" style="margin-bottom:0.5rem">Атрибуты</span>
+          <p style="font-size:0.85rem">Параметры тегов: src, href, alt, class, id. Дают дополнительную информацию элементу.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- СТРАНИЦЫ САЙТА -->
+<section class="section" id="pages">
+  <div class="section-label">03 — Страницы</div>
+  <h2 class="section-title">Страницы сайта</h2>
+  <p class="section-sub">Разные типы сайтов требуют разных наборов страниц. Вот самые распространённые.</p>
+
+  <div class="pages-grid">
+    <div class="page-card">
+      <span class="label label-must">Обязательно</span>
+      <h4>Главная</h4>
+      <p>Первое впечатление. Обзор всего сайта, призыв к действию.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-must">Обязательно</span>
+      <h4>О нас</h4>
+      <p>Кто вы, чем занимаетесь, ваша история и команда.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-must">Обязательно</span>
+      <h4>Контакты</h4>
+      <p>Телефон, email, адрес, форма обратной связи.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-must">Обязательно</span>
+      <h4>Политика конфиденциальности</h4>
+      <p>Юридически обязательна для большинства сайтов.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-common">Частые</span>
+      <h4>Услуги / Продукты</h4>
+      <p>Что вы предлагаете, цены, описания.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-common">Частые</span>
+      <h4>Блог / Новости</h4>
+      <p>Контент для SEO и поддержания аудитории.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-common">Частые</span>
+      <h4>FAQ</h4>
+      <p>Ответы на частые вопросы. Снижает нагрузку на поддержку.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-common">Частые</span>
+      <h4>Портфолио / Кейсы</h4>
+      <p>Примеры выполненных работ и результаты.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-shop">Магазин</span>
+      <h4>Каталог</h4>
+      <p>Список товаров с фильтрами и сортировкой.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-shop">Магазин</span>
+      <h4>Карточка товара</h4>
+      <p>Фото, описание, характеристики, отзывы, кнопка купить.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-shop">Магазин</span>
+      <h4>Корзина и оплата</h4>
+      <p>Список выбранных товаров и оформление заказа.</p>
+    </div>
+    <div class="page-card">
+      <span class="label label-shop">Сервис</span>
+      <h4>Личный кабинет</h4>
+      <p>История заказов, настройки, персональные данные.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px">
+    <p style="font-size:0.9rem;color:var(--text2)">
+      <span style="color:var(--accent3);font-family:'JetBrains Mono',monospace;font-size:12px">МИНИМАЛЬНЫЙ НАБОР</span><br><br>
+      Для небольшого бизнеса достаточно четырёх страниц: <strong style="color:var(--text)">Главная → Услуги → О нас → Контакты</strong>. Всё остальное добавляется по мере роста проекта.
+    </p>
+  </div>
+</section>
+
+<!-- ВИДЫ СТРУКТУРЫ -->
+<section class="section" id="types">
+  <div class="section-label">04 — Архитектура</div>
+  <h2 class="section-title">Виды структуры сайта</h2>
+  <p class="section-sub">Три основных способа организовать связи между страницами. У каждого — своя область применения.</p>
+
+  <div class="struct-grid">
+
+    <div class="struct-card">
+      <div class="struct-visual">
+        <svg width="140" height="80" viewBox="0 0 140 80">
+          <rect x="55" y="8" width="30" height="18" rx="4" fill="rgba(108,99,255,0.2)" stroke="#6c63ff" stroke-width="1"/>
+          <text x="70" y="21" text-anchor="middle" font-size="8" fill="#6c63ff" font-family="monospace">1</text>
+          <line x1="70" y1="26" x2="70" y2="36" stroke="#444" stroke-width="1"/>
+          <rect x="55" y="36" width="30" height="18" rx="4" fill="rgba(108,99,255,0.15)" stroke="#6c63ff" stroke-width="1"/>
+          <text x="70" y="49" text-anchor="middle" font-size="8" fill="#6c63ff" font-family="monospace">2</text>
+          <line x1="70" y1="54" x2="70" y2="64" stroke="#444" stroke-width="1"/>
+          <rect x="55" y="64" width="30" height="14" rx="4" fill="rgba(108,99,255,0.1)" stroke="#6c63ff" stroke-width="1"/>
+          <text x="70" y="74" text-anchor="middle" font-size="8" fill="#6c63ff" font-family="monospace">3</text>
+        </svg>
+      </div>
+      <h3>Линейная</h3>
+      <p>Страницы идут одна за другой, как шаги. Пользователь движется по заданному маршруту без ответвлений.</p>
+      <div class="use">→ Лендинг, квиз, онбординг</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-visual">
+        <svg width="160" height="90" viewBox="0 0 160 90">
+          <rect x="60" y="4" width="40" height="18" rx="4" fill="rgba(67,233,123,0.2)" stroke="#43e97b" stroke-width="1"/>
+          <text x="80" y="17" text-anchor="middle" font-size="8" fill="#43e97b" font-family="monospace">Главная</text>
+          <line x1="60" y1="22" x2="30" y2="38" stroke="#444" stroke-width="1"/>
+          <line x1="80" y1="22" x2="80" y2="38" stroke="#444" stroke-width="1"/>
+          <line x1="100" y1="22" x2="130" y2="38" stroke="#444" stroke-width="1"/>
+          <rect x="10" y="38" width="40" height="16" rx="4" fill="rgba(67,233,123,0.15)" stroke="#43e97b" stroke-width="1"/>
+          <text x="30" y="50" text-anchor="middle" font-size="7" fill="#43e97b" font-family="monospace">О нас</text>
+          <rect x="60" y="38" width="40" height="16" rx="4" fill="rgba(67,233,123,0.15)" stroke="#43e97b" stroke-width="1"/>
+          <text x="80" y="50" text-anchor="middle" font-size="7" fill="#43e97b" font-family="monospace">Услуги</text>
+          <rect x="110" y="38" width="40" height="16" rx="4" fill="rgba(67,233,123,0.15)" stroke="#43e97b" stroke-width="1"/>
+          <text x="130" y="50" text-anchor="middle" font-size="7" fill="#43e97b" font-family="monospace">Блог</text>
+          <line x1="70" y1="54" x2="55" y2="66" stroke="#444" stroke-width="1"/>
+          <line x1="90" y1="54" x2="100" y2="66" stroke="#444" stroke-width="1"/>
+          <rect x="36" y="66" width="36" height="14" rx="4" fill="rgba(67,233,123,0.1)" stroke="#43e97b" stroke-width="1"/>
+          <text x="54" y="77" text-anchor="middle" font-size="6.5" fill="#43e97b" font-family="monospace">Дизайн</text>
+          <rect x="80" y="66" width="36" height="14" rx="4" fill="rgba(67,233,123,0.1)" stroke="#43e97b" stroke-width="1"/>
+          <text x="98" y="77" text-anchor="middle" font-size="6.5" fill="#43e97b" font-family="monospace">Разраб.</text>
+        </svg>
+      </div>
+      <h3>Иерархическая</h3>
+      <p>Дерево: главная → разделы → подстраницы. Самый распространённый вид, подходит для большинства сайтов.</p>
+      <div class="use">→ Корпоративный сайт, магазин</div>
+    </div>
+
+    <div class="struct-card">
+      <div class="struct-visual">
+        <svg width="140" height="90" viewBox="0 0 140 90">
+          <circle cx="70" cy="45" r="12" fill="rgba(255,107,107,0.2)" stroke="#ff6b6b" stroke-width="1"/>
+          <text x="70" y="49" text-anchor="middle" font-size="7" fill="#ff6b6b" font-family="monospace">A</text>
+          <circle cx="25" cy="20" r="10" fill="rgba(255,107,107,0.15)" stroke="#ff6b6b" stroke-width="1"/>
+          <text x="25" y="24" text-anchor="middle" font-size="7" fill="#ff6b6b" font-family="monospace">B</text>
+          <circle cx="115" cy="20" r="10" fill="rgba(255,107,107,0.15)" stroke="#ff6b6b" stroke-width="1"/>
+          <text x="115" y="24" text-anchor="middle" font-size="7" fill="#ff6b6b" font-family="monospace">C</text>
+          <circle cx="20" cy="72" r="10" fill="rgba(255,107,107,0.15)" stroke="#ff6b6b" stroke-width="1"/>
+          <text x="20" y="76" text-anchor="middle" font-size="7" fill="#ff6b6b" font-family="monospace">D</text>
+          <circle cx="120" cy="72" r="10" fill="rgba(255,107,107,0.15)" stroke="#ff6b6b" stroke-width="1"/>
+          <text x="120" y="76" text-anchor="middle" font-size="7" fill="#ff6b6b" font-family="monospace">E</text>
+          <line x1="59" y1="39" x2="34" y2="27" stroke="#ff6b6b" stroke-width="0.8" opacity="0.6"/>
+          <line x1="81" y1="39" x2="106" y2="27" stroke="#ff6b6b" stroke-width="0.8" opacity="0.6"/>
+          <line x1="60" y1="53" x2="29" y2="65" stroke="#ff6b6b" stroke-width="0.8" opacity="0.6"/>
+          <line x1="80" y1="53" x2="111" y2="65" stroke="#ff6b6b" stroke-width="0.8" opacity="0.6"/>
+          <line x1="35" y1="20" x2="105" y2="20" stroke="#ff6b6b" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,2"/>
+          <line x1="30" y1="68" x2="110" y2="68" stroke="#ff6b6b" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,2"/>
+          <line x1="23" y1="62" x2="23" y2="30" stroke="#ff6b6b" stroke-width="0.8" opacity="0.4" stroke-dasharray="3,2"/>
+        </svg>
+      </div>
+      <h3>Сетевая (паутина)</h3>
+      <p>Страницы связаны между собой произвольно. Можно попасть с любой страницы на любую через перекрёстные ссылки.</p>
+      <div class="use">→ Википедия, новостной сайт</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;padding:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px">
+    <p style="font-size:0.9rem;color:var(--text2)">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">НА ПРАКТИКЕ</span><br><br>
+      Большинство сайтов используют <strong style="color:var(--text)">иерархию как основу</strong> и добавляют перекрёстные ссылки там, где это необходимо — например, «Похожие статьи» в блоге или «С этим товаром покупают» в магазине.
+    </p>
+  </div>
+</section>
+
+<!-- КРАТКАЯ СТРУКТУРА СТРАНИЦЫ -->
+<section class="section">
+  <div class="section-label">05 — Страница</div>
+  <h2 class="section-title">Структура страницы</h2>
+  <p class="section-sub">Два уровня структуры: архитектура сайта и устройство каждой отдельной страницы.</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-family:'Playfair Display',serif;margin-bottom:1rem;font-size:1.15rem">Архитектура сайта</h3>
+      <div class="tree">
+        <div class="tree-root">Главная</div>
+        <div class="tree-item">О нас</div>
+        <div class="tree-item">Услуги</div>
+        <div class="tree-sub">Разработка</div>
+        <div class="tree-sub last">Дизайн</div>
+        <div class="tree-item last">Контакты</div>
+      </div>
+      <p style="color:var(--text2);font-size:0.85rem;margin-top:0.75rem">Влияет на навигацию и SEO. Пользователь всегда должен понимать, где он находится.</p>
+    </div>
+    <div>
+      <h3 style="font-family:'Playfair Display',serif;margin-bottom:1rem;font-size:1.15rem">Структура страницы</h3>
+      <div class="stack">
+        <div class="stack-item">
+          <div class="stack-left"><span class="stack-name">&lt;header&gt;</span><span class="stack-role">Шапка</span></div>
+          <div class="stack-right">Лого, навигация, кнопки входа</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-left"><span class="stack-name">&lt;main&gt;</span><span class="stack-role">Контент</span></div>
+          <div class="stack-right">Основное содержимое страницы: текст, изображения, секции</div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-left"><span class="stack-name">&lt;footer&gt;</span><span class="stack-role">Подвал</span></div>
+          <div class="stack-right">Контакты, ссылки, копирайт, соцсети</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">&lt;webdev/&gt; guide</div>
+  <p>Краткое руководство по структуре веб-разработки</p>
+</footer>
+
+</body>
+</html>
